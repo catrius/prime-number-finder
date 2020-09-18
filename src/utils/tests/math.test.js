@@ -14,5 +14,6 @@ describe('calculatePreviousPrimeNumber', function () {
     expect(calculatePreviousPrimeNumber(16)).toBe(13);
     expect(calculatePreviousPrimeNumber(57)).toBe(53);
     expect(calculatePreviousPrimeNumber(100)).toBe(97);
+    expect(calculatePreviousPrimeNumber('some string')).toBe(null);
   });
 });

@@ -1,4 +1,4 @@
-import { lastIndexOf, range, fill } from 'lodash';
+import { lastIndexOf, range, fill, isNaN } from 'lodash';
 
 const generateIsPrimeNumbers = n => {
   const results = fill(range(n), true);
@@ -20,6 +20,10 @@ const generateIsPrimeNumbers = n => {
 
 export const calculatePreviousPrimeNumber = n => {
   // TODO: cache isPrimeNumbers, so that if n <= last n, it won't be recalculated.
+  if (isNaN(n)) {
+    return null;
+  }
+
   if (n <= 2) {
     return null;
   }
