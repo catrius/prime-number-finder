@@ -1,4 +1,4 @@
-import { lastIndexOf, range, fill, isNaN } from 'lodash';
+import { lastIndexOf, range, fill } from 'lodash';
 
 const generateIsPrimeNumbers = n => {
   const results = fill(range(n), true);
