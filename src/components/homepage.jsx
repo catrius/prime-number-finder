@@ -10,19 +10,31 @@ export default class Homepage extends Component {
       previousPrime: null,
     };
 
-    this.handleOnclick = this.handleOnclick.bind(this);
+    this.calculate = this.calculate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  handleOnclick() {
+  calculate() {
     this.setState({ previousPrime: calculatePreviousPrimeNumber(this.input.current.value) });
+  }
+
+  handleClick() {
+    this.calculate();
+  }
+
+  handleKeyPress(e) {
+    if(e.key === 'Enter'){
+      this.calculate();
+    }
   }
 
   render() {
     return (
       <div>
         <div>Previous prime number calculator</div>
-        <input ref={ this.input }/>
-        <button onClick={ this.handleOnclick }>Calculate</button>
+        <input onKeyPress={ this.handleKeyPress } ref={ this.input }/>
+        <button onClick={ this.handleClick }>Calculate</button>
         <div>Result: { this.state.previousPrime || 'Not found' }</div>
       </div>
     );
