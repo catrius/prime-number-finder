@@ -22,7 +22,6 @@ export default class Homepage extends Component {
     if (e.key === 'Enter') {
       this.setState({
         output: calculatePreviousPrimeNumber(this.state.input),
-        init: false,
       });
     }
   }
