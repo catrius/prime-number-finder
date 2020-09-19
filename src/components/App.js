@@ -6,6 +6,7 @@ import '@material/react-typography/dist/typography.css';
 import 'components/App.css';
 import Homepage from 'components/homepage';
 
+
 function App() {
   return (
     <div className='App'>

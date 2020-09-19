@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import TextField, { Input } from '@material/react-text-field';
 import { Headline4, Headline5 } from '@material/react-typography';
 
-import { calculatePreviousPrimeNumber } from 'utils/math';
 import styles from './homepage.module.sass';
+
+import { calculatePreviousPrimeNumber } from 'utils/math';
+
 
 export default class Homepage extends Component {
   constructor(props) {

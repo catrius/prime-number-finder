@@ -1,0 +1,76 @@
+---
+extends:
+  - react-app
+  - eslint:recommended
+  - plugin:jsx-a11y/recommended
+  - plugin:react/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+
+plugins:
+  - jsx-a11y
+  - react
+  - import
+
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+
+settings:
+  import/resolver:
+    webpack:
+    node:
+      extensions:
+        - .js
+        - .jsx
+      moduleDirectory:
+        - src
+
+rules:
+  max-len:
+    - error
+    - code: 120
+  semi:
+    - error
+  comma-dangle:
+    - error
+    - always-multiline
+  comma-spacing:
+    - error
+    - before: false
+      after: true
+  quotes:
+    - error
+    - single
+    - avoidEscape: true
+  camelcase:
+    - error
+  object-curly-spacing:
+    - error
+    - always
+  keyword-spacing:
+    - error
+  no-multiple-empty-lines:
+    - error
+    - max: 2
+      maxEOF: 0
+  arrow-spacing:
+    - error
+    - before: true
+      after: true
+  import/newline-after-import:
+    - error
+    - count: 2
+  import/order:
+    - error
+    - newlines-between: always
+  import/named:
+    - off
+  react/jsx-curly-spacing:
+    - error
+    - when: always
+      children: true
+  jsx-a11y/no-static-element-interactions:
+    - off
+  jsx-a11y/click-events-have-key-events:
+    - off

@@ -1,5 +1,6 @@
 import { lastIndexOf, range, fill } from 'lodash';
 
+
 const generateIsPrimeNumbers = n => {
   const results = fill(range(n), true);
   results[0] = false;

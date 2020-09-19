@@ -1,9 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Headline4, Headline5 } from '@material/react-typography';
+import TextField, { Input } from '@material/react-text-field';
 
 import Homepage from 'components/homepage';
-import TextField, { Input } from '@material/react-text-field';
+
 
 describe('Homepage', function () {
   it('should render correctly', function () {
@@ -39,4 +40,3 @@ describe('Homepage', function () {
     expect(output.dive()).toHaveText('Not found');
   });
 });
-

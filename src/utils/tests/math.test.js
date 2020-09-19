@@ -1,5 +1,6 @@
 import { calculatePreviousPrimeNumber } from 'utils/math';
 
+
 describe('calculatePreviousPrimeNumber', function () {
   it('should return correct previous prime number', function () {
     expect(calculatePreviousPrimeNumber(0)).toBe(null);
