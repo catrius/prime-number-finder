@@ -1,0 +1,38 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: circleci/node
+
+jobs:
+  test:
+    executor: default
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          command: yarn lint
+          name: Eslint
+      - run:
+          command: yarn test:ci
+          name: Test
+      - run:
+          command: bash <(curl -s https://codecov.io/bash)
+          name: Upload coverage report to Codecov
+
+workflows:
+  test-deploy:
+    jobs:
+      - test
