@@ -5,6 +5,9 @@ executors:
     docker:
       - image: circleci/node
 
+orbs:
+  aws-cli: circleci/aws-cli@1.3.0
+
 jobs:
   test:
     executor: default
@@ -23,16 +26,49 @@ jobs:
           paths:
             - ~/.cache/yarn
       - run:
-          command: yarn lint
           name: Eslint
+          command: yarn lint
       - run:
-          command: yarn test:ci
           name: Test
+          command: yarn test:ci
       - run:
-          command: bash <(curl -s https://codecov.io/bash)
           name: Upload coverage report to Codecov
+          command: bash <(curl -s https://codecov.io/bash)
+
+  deploy:
+    executor: default
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Install AWS CLI
+          command: sudo apt install awscli -y
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Deploy to S3
+          command: yarn deploy
 
 workflows:
   test-deploy:
     jobs:
       - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
