@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import TextField, { Input } from '@material/react-text-field';
 import { Headline4, Headline5 } from '@material/react-typography';
 import MaterialIcon from '@material/react-material-icon';
 import Button from '@material/react-button';
+import { func, number, string } from 'prop-types';
 
 import styles from './homepage.module.sass';
 
-import { calculatePreviousPrimeNumber } from 'utils/math';
+import { getPrime } from 'selectors/prime-selectors';
+import { getFetchState } from 'selectors/fetch-state-selectors';
+import { fetchPrime as _fetchPrime } from 'actions/fetch-data-actions';
+import { FAIL, REQUEST } from 'utils/constants';
 
 
-export default class Homepage extends Component {
+class Homepage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      init: true,
       input: '',
-      output: 'Input your number above',
     };
 
     this.calculate = this.calculate.bind(this);
@@ -23,12 +28,17 @@ export default class Homepage extends Component {
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.clearInput = this.clearInput.bind(this);
+    this.result = this.result.bind(this);
   }
 
   calculate() {
-    this.setState({
-      output: calculatePreviousPrimeNumber(this.state.input),
-    });
+    const { fetchPrime } = this.props;
+    if (this.state.init) {
+      this.setState({
+        init: false,
+      });
+    }
+    fetchPrime(this.state.input);
   }
 
   handleInputKeyPress(e) {
@@ -49,9 +59,28 @@ export default class Homepage extends Component {
 
   clearInput() {
     this.setState({
+      init: true,
       input: '',
-      output: 'Input your number above',
     });
+  }
+
+  result() {
+    const { prime, fetchState } = this.props;
+    const { init } = this.state;
+
+    if (init) {
+      return 'Input your number above';
+    }
+
+    if (fetchState === FAIL) {
+      return 'Something wrong happens';
+    }
+
+    if (fetchState === REQUEST) {
+      return 'Calculating...';
+    }
+
+    return prime;
   }
 
   render() {
@@ -78,10 +107,27 @@ export default class Homepage extends Component {
         >
           Calculate
         </Button>
-        <Headline5>{ this.state.output || 'Not found' }</Headline5>
+        <Headline5>{ this.result() }</Headline5>
       </div>
     );
   }
 }
 
-Homepage.propTypes = {};
+Homepage.propTypes = {
+  prime: number,
+  fetchPrime: func,
+  fetchState: string,
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  prime: getPrime(state),
+  fetchState: getFetchState(state, ownProps),
+});
+
+const mapDispatchToProps = {
+  fetchPrime: _fetchPrime,
+};
+
+const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Homepage);
+
+export default HomepageContainer;
