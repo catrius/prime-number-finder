@@ -5,16 +5,17 @@ import { Headline4, Headline5 } from '@material/react-typography';
 import MaterialIcon from '@material/react-material-icon';
 import Button from '@material/react-button';
 import { func, number, string } from 'prop-types';
+import { noop } from 'lodash';
 
 import styles from './homepage.module.sass';
 
 import { getPrime } from 'selectors/prime-selectors';
 import { getFetchState } from 'selectors/fetch-state-selectors';
 import { fetchPrime as _fetchPrime } from 'actions/fetch-data-actions';
-import { FAIL, REQUEST } from 'utils/constants';
+import { FAIL, REQUEST, SUCCESS } from 'utils/constants';
 
 
-class Homepage extends Component {
+export class Homepage extends Component {
   constructor(props) {
     super(props);
 
@@ -73,7 +74,7 @@ class Homepage extends Component {
     }
 
     if (fetchState === FAIL) {
-      return 'Something wrong happens';
+      return 'Something wrong happened';
     }
 
     if (fetchState === REQUEST) {
@@ -117,6 +118,12 @@ Homepage.propTypes = {
   prime: number,
   fetchPrime: func,
   fetchState: string,
+};
+
+Homepage.defaultProps = {
+  prime: null,
+  fetchPrime: noop,
+  fetchState: SUCCESS,
 };
 
 const mapStateToProps = (state, ownProps) => ({

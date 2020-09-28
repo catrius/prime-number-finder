@@ -9,7 +9,7 @@ describe('fetchPrime', () => {
       payload: {
         request: {
           method: 'get',
-          url: `${ PRIME_API_URL }?n=${ 10 }/`,
+          url: `${ PRIME_API_URL }?n=${ 10 }`,
           params: {},
         },
       },

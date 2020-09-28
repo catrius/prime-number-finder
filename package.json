@@ -56,12 +56,16 @@
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
     "lint": "^0.7.0",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "redux-mock-store": "^1.5.4",
+    "sinon": "^9.0.3"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
       "src/serviceWorker.js",
-      "src/index.js"
+      "src/index.js",
+      "src/store.js",
+      "src/components/App.js"
     ]
   }
 }
