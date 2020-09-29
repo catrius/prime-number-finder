@@ -5,7 +5,7 @@ export const PRODUCTION = 'production';
 
 // API URLs
 export const API_URL = ENVIRONMENT === PRODUCTION ?
-  'http://api.previous-prime-number.catri.us/' : 'http://localhost:8000';
+  'https://api-previous-prime-number.catri.us/' : 'http://localhost:8000';
 export const PRIME_API_URL = '/prime/';
 
 // Fetch states
