@@ -1,15 +1,25 @@
+# Previous Prime Number Frontend
+
+[![CircleCI](https://circleci.com/gh/catrius/prime-number-finder.svg?style=svg)](https://app.circleci.com/pipelines/github/catrius/prime-number-finder)
+[![codecov](https://codecov.io/gh/catrius/prime-number-finder/branch/master/graph/badge.svg?token=DHE0UM81GU)](https://codecov.io/gh/catrius/prime-number-finder)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Stack
 
-- Node 12.8.4
+- Node >= 12.8
 - CircleCI
 - CodeCov
 - S3
 
-## Deploy
+## Websites
+    - Backend: https://api-previous-prime-number.catri.us/
+    - Frontend: https://previous-prime-number.catri.us/
 
-- The deploy runs automatically on Master branch after it passes all tests or CircleCI. Or it can be done it manually by running `yarn deploy` 
+## Deployment
+
+- The deploy runs automatically on Master branch after it passes all tests or CircleCI. Or it can be done it manually by running `yarn deploy`.
 
 ## Available Scripts
 
