@@ -1,74 +1,50 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import TextField, { Input } from '@material/react-text-field';
 import { Headline4, Headline5 } from '@material/react-typography';
 import MaterialIcon from '@material/react-material-icon';
 import Button from '@material/react-button';
-import { func, number, string } from 'prop-types';
-import { noop } from 'lodash';
 
 import styles from './homepage.module.sass';
 
-import { getPrime } from 'selectors/prime-selectors';
-import { getFetchState } from 'selectors/fetch-state-selectors';
 import { fetchPrime as _fetchPrime } from 'actions/fetch-data-actions';
-import { FAIL, REQUEST, SUCCESS } from 'utils/constants';
+import { FAIL, REQUEST } from 'utils/constants';
 
 
-export class Homepage extends Component {
-  constructor(props) {
-    super(props);
+export default function Homepage() {
+  const dispatch = useDispatch();
+  const [init, setInit] = useState(true);
+  const [input, setInput] = useState('');
+  const prime = useSelector(state => state.prime);
+  const fetchState = useSelector(state => state.fetchState);
 
-    this.state = {
-      init: true,
-      input: '',
-    };
-
-    this.calculate = this.calculate.bind(this);
-    this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.clearInput = this.clearInput.bind(this);
-    this.result = this.result.bind(this);
-  }
-
-  calculate() {
-    const { fetchPrime } = this.props;
-    if (this.state.init) {
-      this.setState({
-        init: false,
-      });
+  function calculate() {
+    if (init) {
+      setInit(false);
     }
-    fetchPrime(this.state.input);
+    dispatch(_fetchPrime(input));
   }
 
-  handleInputKeyPress(e) {
+  function handleInputKeyPress(e) {
     if (e.key === 'Enter') {
-      this.calculate();
+      calculate();
     }
   }
 
-  handleButtonClick() {
-    this.calculate();
+  function handleButtonClick() {
+    calculate();
   }
 
-  handleInputChange(e) {
-    this.setState({
-      input: e.currentTarget.value,
-    });
+  function handleInputChange(e) {
+    setInput(e.currentTarget.value);
   }
 
-  clearInput() {
-    this.setState({
-      init: true,
-      input: '',
-    });
+  function clearInput() {
+    setInit(true);
+    setInput('');
   }
 
-  result() {
-    const { prime, fetchState } = this.props;
-    const { init } = this.state;
-
+  function result() {
     if (init) {
       return 'Input your number above';
     }
@@ -84,57 +60,30 @@ export class Homepage extends Component {
     return prime;
   }
 
-  render() {
-    return (
-      <div className={ styles['homepage'] }>
-        <Headline4>Previous prime number calculator</Headline4>
-        <TextField
-          className={ styles['input'] }
-          onTrailingIconSelect={ this.clearInput }
-          trailingIcon={ <MaterialIcon role='button' icon='highlight_off' /> }
-        >
-          <Input
-            value={ this.state.input }
-            onKeyPress={ this.handleInputKeyPress }
-            onChange={ this.handleInputChange }
-            autoFocus={ true }
-          />
-        </TextField>
-        <Button
-          className={ styles['calculate-button'] }
-          raised={ true }
-          unelevated={ true }
-          onClick={ this.handleButtonClick }
-        >
-          Calculate
-        </Button>
-        <Headline5>{ this.result() }</Headline5>
-      </div>
-    );
-  }
+  return (
+    <div className={ styles['homepage'] }>
+      <Headline4>Previous prime number calculator</Headline4>
+      <TextField
+        className={ styles['input'] }
+        onTrailingIconSelect={ clearInput }
+        trailingIcon={ <MaterialIcon role='button' icon='highlight_off'/> }
+      >
+        <Input
+          value={ input }
+          onKeyPress={ handleInputKeyPress }
+          onChange={ handleInputChange }
+          autoFocus={ true }
+        />
+      </TextField>
+      <Button
+        className={ styles['calculate-button'] }
+        raised={ true }
+        unelevated={ true }
+        onClick={ handleButtonClick }
+      >
+        Calculate
+      </Button>
+      <Headline5>{ result() }</Headline5>
+    </div>
+  );
 }
-
-Homepage.propTypes = {
-  prime: number,
-  fetchPrime: func,
-  fetchState: string,
-};
-
-Homepage.defaultProps = {
-  prime: null,
-  fetchPrime: noop,
-  fetchState: SUCCESS,
-};
-
-const mapStateToProps = (state, ownProps) => ({
-  prime: getPrime(state),
-  fetchState: getFetchState(state, ownProps),
-});
-
-const mapDispatchToProps = {
-  fetchPrime: _fetchPrime,
-};
-
-const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Homepage);
-
-export default HomepageContainer;
