@@ -7,7 +7,7 @@ import Button from '@material/react-button';
 
 import styles from './homepage.module.sass';
 
-import { fetchPrime as _fetchPrime } from 'actions/fetch-data-actions';
+import { fetchPrime } from 'actions/fetch-data-actions';
 import { FAIL, REQUEST } from 'utils/constants';
 
 
@@ -18,33 +18,20 @@ export default function Homepage() {
   const prime = useSelector(state => state.prime);
   const fetchState = useSelector(state => state.fetchState);
 
-  function calculate() {
-    if (init) {
-      setInit(false);
-    }
-    dispatch(_fetchPrime(input));
-  }
+  const handleInputKeyPress = e => e.key === 'Enter' && calculate();
+  const handleInputChange = e => setInput(e.currentTarget.value);
 
-  function handleInputKeyPress(e) {
-    if (e.key === 'Enter') {
-      calculate();
-    }
-  }
+  const calculate = () => {
+    init && setInit(false);
+    dispatch(fetchPrime(input));
+  };
 
-  function handleButtonClick() {
-    calculate();
-  }
-
-  function handleInputChange(e) {
-    setInput(e.currentTarget.value);
-  }
-
-  function clearInput() {
+  const clearInput = () => {
     setInit(true);
     setInput('');
-  }
+  };
 
-  function result() {
+  const result = () => {
     if (init) {
       return 'Input your number above';
     }
@@ -58,7 +45,7 @@ export default function Homepage() {
     }
 
     return prime;
-  }
+  };
 
   return (
     <div className={ styles['homepage'] }>
@@ -79,7 +66,7 @@ export default function Homepage() {
         className={ styles['calculate-button'] }
         raised={ true }
         unelevated={ true }
-        onClick={ handleButtonClick }
+        onClick={ calculate }
       >
         Calculate
       </Button>
